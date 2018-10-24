@@ -8,32 +8,18 @@
 
 import UIKit
 
-class ListViewController:UIViewController,UITableViewDataSource,UITableViewDelegate{
+class ListViewController:UIViewController{
     
     var tableView:UITableView!
     var list: [CountryHeritage] = [CountryHeritage]()
-    
+    var apiRequest:APIRequest!
+
     override func viewDidLoad() {
-        let item1 = CountryHeritage()
-        item1.title = "One"
-        item1.desc = "desc one desc one desc one desc one desc one desc one desc one desc one desc one desc one desc one desc one desc one desc one desc one desc one desc one "
-        item1.imageHref = "noImage"
-        list.append(item1)
-        
-        let item2 = CountryHeritage()
-        item2.title = "Two"
-        item2.desc = "desc two"
-        item2.imageHref = "noImage"
-        list.append(item2)
-        
-        let item3 = CountryHeritage()
-        item3.title = "Three"
-        item3.desc = "desc three"
-        item3.imageHref = "noImage"
-        list.append(item3)
-        
         setUpTableView()
         setUpView()
+        self.apiRequest = APIRequest()
+        self.apiRequest.delegate = self
+        self.apiRequest.getData()
     }
     
     //Mark:- setup methods
@@ -65,16 +51,24 @@ class ListViewController:UIViewController,UITableViewDataSource,UITableViewDeleg
         let tableViewBottomConstraint = tableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
         self.view.addConstraints([tableViewTopConstraint, tableViewLeadingConstraint,  tableViewTrailingConstraint, tableViewBottomConstraint]);
     }
+}
+//Mark:- Tableview delegate methods
+extension ListViewController:UITableViewDelegate{
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        return UITableView.automaticDimension
+    }
+}
 
-    
-    //Mark:- Tableview data source methods
+//Mark:- Tableview data source methods
+extension ListViewController:UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (list.count)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CountryHeritageTableViewCell
-       cell.setCell(withItem: list[indexPath.row])
+        cell.setCell(withItem: list[indexPath.row])
         
         return cell;
     }
@@ -83,17 +77,13 @@ class ListViewController:UIViewController,UITableViewDataSource,UITableViewDeleg
         return 1
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let heritage = self.list[indexPath.row]
-        
-        var height = 80.0
-        if let cell = tableView.cellForRow(at: indexPath) as? CountryHeritageTableViewCell{
-            let titleHeight = Double(cell.heightForView(text: heritage.desc!, font: cell.descriptionLabel.font, width: 100))
-            let descHeight = Double(cell.heightForView(text: heritage.title!, font: cell.descriptionLabel.font, width: 100))
-            height = Double(titleHeight + descHeight)
+}
+//Mark:- APIRequestDelagate methods
+extension ListViewController:APIRequestDelegate{
+    func getCountryData(list: [CountryHeritage]) {
+        self.list = list
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
-        
-        return CGFloat(height)
     }
-    
 }

@@ -11,7 +11,7 @@ import Foundation
 class CountryHeritage: NSObject, Codable {
     var title: String? = ""
     var desc: String? = ""
-    var imageHref: String = "noImage"
+    var imageHref: String? = "noImage"
     
     private enum CodingKeys: String, CodingKey {
         case title

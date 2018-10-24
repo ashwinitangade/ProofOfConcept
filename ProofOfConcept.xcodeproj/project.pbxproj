@@ -13,6 +13,8 @@
 		4348101C2180376A009A04D6 /* CountryHeritage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4348101B2180376A009A04D6 /* CountryHeritage.swift */; };
 		4348101F2180388C009A04D6 /* CountryHeritageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4348101E2180388C009A04D6 /* CountryHeritageTableViewCell.swift */; };
 		43481021218038C9009A04D6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43481020218038C9009A04D6 /* Constants.swift */; };
+		4348102521807680009A04D6 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4348102421807680009A04D6 /* APIRequest.swift */; };
+		434810272180789C009A04D6 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434810262180789C009A04D6 /* Country.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		4348101B2180376A009A04D6 /* CountryHeritage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryHeritage.swift; sourceTree = "<group>"; };
 		4348101E2180388C009A04D6 /* CountryHeritageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryHeritageTableViewCell.swift; sourceTree = "<group>"; };
 		43481020218038C9009A04D6 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		4348102421807680009A04D6 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
+		434810262180789C009A04D6 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +60,7 @@
 		43480FF9217F04B8009A04D6 /* ProofOfConcept */ = {
 			isa = PBXGroup;
 			children = (
+				434810232180765C009A04D6 /*  Network */,
 				43481022218038E3009A04D6 /* Controller */,
 				4348101D21803870009A04D6 /* Custom View */,
 				4348101A2180373E009A04D6 /* Models */,
@@ -71,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				4348101B2180376A009A04D6 /* CountryHeritage.swift */,
+				434810262180789C009A04D6 /* Country.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -89,6 +95,14 @@
 				43480FFC217F04B8009A04D6 /* ListViewController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		434810232180765C009A04D6 /*  Network */ = {
+			isa = PBXGroup;
+			children = (
+				4348102421807680009A04D6 /* APIRequest.swift */,
+			);
+			path = " Network";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -160,10 +174,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				434810272180789C009A04D6 /* Country.swift in Sources */,
 				43481021218038C9009A04D6 /* Constants.swift in Sources */,
 				4348101C2180376A009A04D6 /* CountryHeritage.swift in Sources */,
 				4348101F2180388C009A04D6 /* CountryHeritageTableViewCell.swift in Sources */,
 				43480FFD217F04B8009A04D6 /* ListViewController.swift in Sources */,
+				4348102521807680009A04D6 /* APIRequest.swift in Sources */,
 				43480FFB217F04B8009A04D6 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

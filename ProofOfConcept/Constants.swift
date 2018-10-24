@@ -9,9 +9,7 @@
 import UIKit
 
 struct Constants {
-    static let baseURL: URL = {
-        return URL(string: "https://dl.dropboxusercontent.com/s/2iodh4vg0eortkl/facts.json")!
-    }()
+    static let baseURL = "https://dl.dropboxusercontent.com/s/2iodh4vg0eortkl/facts.json"
     static let marginConstant = 20
     static let gapConstant = 10
     static let imageViewWidthConstant = 60
