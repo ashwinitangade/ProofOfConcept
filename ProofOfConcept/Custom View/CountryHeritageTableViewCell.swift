@@ -39,13 +39,13 @@ class CountryHeritageTableViewCell:UITableViewCell{
         descriptionLabel.lineBreakMode = .byWordWrapping
         descriptionLabel.numberOfLines = 0
         descriptionLabel.sizeToFit()
-        descriptionLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        descriptionLabel.font = UIFont.systemFont(ofSize:  CGFloat(Constants.descriptionLabelFontSize), weight: .regular)
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         
         // Title Label constraints added
         titleLabel  = UILabel.init()
         titleLabel.numberOfLines = 0;
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        titleLabel.font = UIFont.boldSystemFont(ofSize: CGFloat(Constants.titleLabelFontSize))
         titleLabel.textColor = UIColor.black
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(titleLabel)
@@ -63,31 +63,29 @@ class CountryHeritageTableViewCell:UITableViewCell{
         bottomLine.translatesAutoresizingMaskIntoConstraints = false
         
         //set Image view constraint
-        let displayImageViewLeadingConstraint = displayImageView.leadingAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.leadingAnchor, constant: CGFloat(20))
-//        let displayImageViewBottomConstraint = displayImageView.bottomAnchor.constraint(equalTo:  self.contentView.safeAreaLayoutGuide.bottomAnchor, constant: CGFloat(20))
-//        let displayImageViewTopConstraint = displayImageView.topAnchor.constraint(equalTo:  self.contentView.safeAreaLayoutGuide.topAnchor, constant: CGFloat(20))
+        let displayImageViewLeadingConstraint = displayImageView.leadingAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.leadingAnchor, constant: CGFloat(Constants.marginConstant))
         let displayImageViewCenterYConstraint = displayImageView.centerYAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.centerYAnchor)
 
-        let displayImageViewTrailingConstraint = displayImageView.trailingAnchor.constraint(equalTo: self.titleLabel.leadingAnchor, constant: CGFloat(-20))
-        let displayImageViewWidthConstraint = displayImageView.widthAnchor.constraint(equalToConstant: CGFloat(60))
+        let displayImageViewTrailingConstraint = displayImageView.trailingAnchor.constraint(equalTo: self.titleLabel.leadingAnchor, constant: CGFloat(-Constants.marginConstant))
+        let displayImageViewWidthConstraint = displayImageView.widthAnchor.constraint(equalToConstant: CGFloat(Constants.imageViewWidthConstant))
    
         //set descriptionLabel constraints
         let descriptionLabelLeadingConstraint = descriptionLabel.leadingAnchor.constraint(equalTo: self.titleLabel.leadingAnchor)
-        let descriptionLabelBottomConstraint = descriptionLabel.bottomAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.bottomAnchor, constant: CGFloat(20))
-        let descriptionLabelTopConstraint = descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: CGFloat(10))
-        let descriptionLabelTrailingConstraint = descriptionLabel.trailingAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.trailingAnchor,constant: CGFloat(-20))
+        let descriptionLabelBottomConstraint = descriptionLabel.bottomAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.bottomAnchor, constant: CGFloat(Constants.marginConstant))
+        let descriptionLabelTopConstraint = descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: CGFloat(Constants.gapConstant))
+        let descriptionLabelTrailingConstraint = descriptionLabel.trailingAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.trailingAnchor,constant: CGFloat(-Constants.marginConstant))
        
        //set title label constraints
-        let titleLabelLeadingConstraint = titleLabel.leadingAnchor.constraint(equalTo: self.displayImageView.trailingAnchor, constant: CGFloat(-20))
-        let titleLableBottomContraint = titleLabel.bottomAnchor.constraint(equalTo: self.descriptionLabel.topAnchor, constant: CGFloat(10))
-        let titleLabelTopConstraint = titleLabel.topAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.topAnchor , constant: CGFloat(20))
+        let titleLabelLeadingConstraint = titleLabel.leadingAnchor.constraint(equalTo: self.displayImageView.trailingAnchor, constant: CGFloat(-Constants.marginConstant))
+        let titleLableBottomContraint = titleLabel.bottomAnchor.constraint(equalTo: self.descriptionLabel.topAnchor, constant: CGFloat(Constants.gapConstant))
+        let titleLabelTopConstraint = titleLabel.topAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.topAnchor , constant: CGFloat(Constants.marginConstant))
         
         //set bottom line view constraint
         let bottomLineLeadingConstraint = bottomLine.leadingAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.leadingAnchor)
         let bottomLineTrailingConstraint = bottomLine.trailingAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.trailingAnchor)
-        let bottomLineTopConstraint = bottomLine.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: CGFloat(10))
-        let bottomLineBottomConstraint = bottomLine.bottomAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.bottomAnchor, constant: CGFloat(4))
-        let bottomLineHeightConstraint = bottomLine.heightAnchor.constraint(equalToConstant: CGFloat(1))
+        let bottomLineTopConstraint = bottomLine.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: CGFloat(Constants.gapConstant))
+        let bottomLineBottomConstraint = bottomLine.bottomAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.bottomAnchor, constant: CGFloat(-Constants.bottomLineHeightConstant))
+        let bottomLineHeightConstraint = bottomLine.heightAnchor.constraint(equalToConstant: CGFloat(Constants.bottomLineHeightConstant))
 
         self.contentView.addConstraints([displayImageViewTrailingConstraint,displayImageViewCenterYConstraint,displayImageViewWidthConstraint,displayImageViewLeadingConstraint,descriptionLabelLeadingConstraint,descriptionLabelBottomConstraint,descriptionLabelTopConstraint,descriptionLabelTrailingConstraint,titleLableBottomContraint,titleLabelLeadingConstraint,titleLabelTopConstraint,bottomLineLeadingConstraint,bottomLineTrailingConstraint,bottomLineTopConstraint,bottomLineBottomConstraint,bottomLineHeightConstraint])
     }

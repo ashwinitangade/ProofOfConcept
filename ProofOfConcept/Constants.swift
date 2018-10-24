@@ -12,10 +12,9 @@ struct Constants {
     static let baseURL: URL = {
         return URL(string: "https://dl.dropboxusercontent.com/s/2iodh4vg0eortkl/facts.json")!
     }()
-    static let leadingConstant = 20
-    static let trailingConstant = 20
-    static let topAndBottomConstant = 10
-    static let imageViewWidthConstant = 100
+    static let marginConstant = 20
+    static let gapConstant = 10
+    static let imageViewWidthConstant = 60
     static let bottomLineHeightConstant = 1
     static let bottomLineBottomConstant = -1
     static let descriptionLabelFontSize = 14

@@ -41,7 +41,7 @@ class ListViewController:UIViewController,UITableViewDataSource,UITableViewDeleg
         self.view.backgroundColor = UIColor.white
         self.navigationController?.navigationBar.barTintColor = UIColor.init(red: 1, green: 129, blue: 189, alpha: 0.5)
         self.navigationController?.navigationBar.tintColor = UIColor.white
-        let navigationAttributes = [.font: UIFont.boldSystemFont(ofSize: 20),NSAttributedString.Key.foregroundColor: UIColor.white]
+        let navigationAttributes = [.font: UIFont.boldSystemFont(ofSize: CGFloat(Constants.navigationBarFontSize)),NSAttributedString.Key.foregroundColor: UIColor.white]
         self.navigationController?.navigationBar.titleTextAttributes = navigationAttributes
     }
     
