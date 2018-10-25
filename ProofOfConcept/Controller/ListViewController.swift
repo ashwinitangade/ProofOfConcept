@@ -8,6 +8,7 @@
 
 import UIKit
 import MBProgressHUD
+import Reachability
 
 class ListViewController:UIViewController{
     
@@ -15,11 +16,14 @@ class ListViewController:UIViewController{
     var list: [CountryHeritage] = [CountryHeritage]()
     var apiRequest:APIRequest!
     var refreshControl:UIRefreshControl!
+    let network = NetworkReachabilityManager.sharedInstance
 
     override func viewDidLoad() {
-        setUpTableView()
-        refreshView()
-        setUpView()
+        network.reachability.whenReachable = { reachability in
+            self.setUpTableView()
+            self.refreshView()
+            self.setUpView()
+        }
         
     }
     
