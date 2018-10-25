@@ -82,6 +82,12 @@ extension ListViewController:UITableViewDataSource{
 extension ListViewController:APIRequestDelegate{
     func getCountryData(list: [CountryHeritage]) {
         self.list = list
+        for (index, countryProperty) in self.list.enumerated(){
+            if countryProperty.title == nil && countryProperty.desc == nil && countryProperty.imageHref == nil{
+                self.list.remove(at: index)
+            }
+        }
+        
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
