@@ -1,0 +1,26 @@
+PODS:
+  - MBProgressHUD (1.1.0)
+  - ReachabilitySwift (4.2.1)
+  - SDWebImage (4.4.2):
+    - SDWebImage/Core (= 4.4.2)
+  - SDWebImage/Core (4.4.2)
+
+DEPENDENCIES:
+  - MBProgressHUD (~> 1.1.0)
+  - ReachabilitySwift
+  - SDWebImage
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - MBProgressHUD
+    - ReachabilitySwift
+    - SDWebImage
+
+SPEC CHECKSUMS:
+  MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
+  ReachabilitySwift: 35720ffea59c1c76d15f885be77fd33e33985427
+  SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
+
+PODFILE CHECKSUM: 461a94bfbd8b2c3fdf83d19fb67c4d329111de99
+
+COCOAPODS: 1.5.0
