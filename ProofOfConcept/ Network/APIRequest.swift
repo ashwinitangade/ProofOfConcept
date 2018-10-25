@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol APIRequestDelegate: class {
-    func getCountryData(list: [CountryHeritage])
+    func getCountryData(list: [CountryHeritage],countryTitle:String)
 }
 
 class APIRequest: NSObject{
@@ -32,7 +32,9 @@ class APIRequest: NSObject{
                 let decoder = JSONDecoder()
                 let country = try decoder.decode(Country.self, from:
                     errorFreeData) //Decode JSON Response Data
-                self.delegate?.getCountryData(list: country.rows)
+                if let title = country.title {
+                    self.delegate?.getCountryData(list: country.rows,countryTitle: title)
+                }
             } catch let parsingError {
                 print("Error", parsingError)
             }

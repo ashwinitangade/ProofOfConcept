@@ -11,16 +11,18 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var window: UIWindow?
-
+    var window: UIWindow!
+    var rootController:ListViewController!
+    var navController:UINavigationController!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        window = UIWindow(frame: UIScreen.main.bounds)
-        window?.makeKeyAndVisible()
-        let rootVC = ListViewController()
-        let navController = UINavigationController(rootViewController: rootVC)
-        window?.rootViewController = navController
+        window = UIWindow.init(frame: UIScreen.main.bounds)
+        rootController = ListViewController()
+        navController = UINavigationController.init(rootViewController: rootController)
+        window.addSubview(navController.view)
+        window.rootViewController = navController
+        window.makeKeyAndVisible()
         return true
     }
 

@@ -7,28 +7,32 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class ListViewController:UIViewController{
     
     var tableView:UITableView!
     var list: [CountryHeritage] = [CountryHeritage]()
     var apiRequest:APIRequest!
+    var refreshControl:UIRefreshControl!
 
     override func viewDidLoad() {
         setUpTableView()
+        refreshView()
         setUpView()
-        self.apiRequest = APIRequest()
-        self.apiRequest.delegate = self
-        self.apiRequest.getData()
+        
     }
     
     //Mark:- setup methods
     func setUpView(){
         self.view.backgroundColor = UIColor.white
-        self.navigationController?.navigationBar.barTintColor = UIColor.init(red: 1, green: 129, blue: 189, alpha: 0.5)
+        self.navigationController?.navigationBar.barTintColor = UIColor.init(hexString: "5a98f7")
         self.navigationController?.navigationBar.tintColor = UIColor.white
         let navigationAttributes = [.font: UIFont.boldSystemFont(ofSize: CGFloat(Constants.navigationBarFontSize)),NSAttributedString.Key.foregroundColor: UIColor.white]
         self.navigationController?.navigationBar.titleTextAttributes = navigationAttributes
+        self.apiRequest = APIRequest()
+        self.apiRequest.delegate = self
+        loadData()
     }
     
     func setUpTableView(){
@@ -50,6 +54,20 @@ class ListViewController:UIViewController{
         let tableViewTrailingConstraint = tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor)
         let tableViewBottomConstraint = tableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
         self.view.addConstraints([tableViewTopConstraint, tableViewLeadingConstraint,  tableViewTrailingConstraint, tableViewBottomConstraint]);
+    }
+    
+    func refreshView(){
+        refreshControl = UIRefreshControl.init()
+        refreshControl.tintColor = UIColor.init(hexString: "5a98f7")
+        tableView.addSubview(refreshControl)
+        refreshControl.addTarget(self, action:#selector(loadData), for: .valueChanged)
+    }
+    
+    @objc func loadData(){
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        self.apiRequest.getData()
+        refreshControl.endRefreshing()
+        
     }
 }
 //Mark:- Tableview delegate methods
@@ -80,16 +98,12 @@ extension ListViewController:UITableViewDataSource{
 }
 //Mark:- APIRequestDelagate methods
 extension ListViewController:APIRequestDelegate{
-    func getCountryData(list: [CountryHeritage]) {
+    func getCountryData(list: [CountryHeritage],countryTitle:String) {
         self.list = list
-        for (index, countryProperty) in self.list.enumerated(){
-            if countryProperty.title == nil && countryProperty.desc == nil && countryProperty.imageHref == nil{
-                self.list.remove(at: index)
-            }
-        }
-        
         DispatchQueue.main.async {
+            self.navigationItem.title = countryTitle
             self.tableView.reloadData()
+            MBProgressHUD.hide(for: self.view, animated: true)
         }
     }
 }

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Kingfisher
+import SDWebImage
 
 class CountryHeritageTableViewCell:UITableViewCell{
     var titleLabel:UILabel!
@@ -16,12 +16,28 @@ class CountryHeritageTableViewCell:UITableViewCell{
     var bottomLine:UIView!
     
     func setCell(withItem:CountryHeritage){
-        titleLabel.text = withItem.title
-        descriptionLabel.text = withItem.desc
-        if let imageUrl = withItem.imageHref {
-            displayImageView.kf.setImage(with: URL(string: imageUrl))
-        }else{
-          displayImageView.image = UIImage(named: "noImage")
+        titleLabel.text = nil
+        descriptionLabel.text = nil
+        self.displayImageView.image = nil
+        titleLabel.text = checkIfValueIsEmpty(value: withItem.title)
+        descriptionLabel.text = checkIfValueIsEmpty(value: withItem.desc)
+        let imageUrl = checkIfValueIsEmpty(value: withItem.imageHref)
+        if let imageView = displayImageView {
+            imageView.sd_setImage(with: URL(string: imageUrl), placeholderImage: UIImage(named: "noImage"), options: .refreshCached) { (image, error, cacheType, url) in
+                if (error != nil || image == nil)
+                {
+                    print("Image loader- ",error as Any)
+                    self.setImage(image: UIImage(named: "noImage")!)
+                }else{
+                    self.setImage(image: image!)
+                }
+            }
+        }
+    }
+    
+    func setImage(image: UIImage){
+        DispatchQueue.main.async {
+            self.displayImageView.image = image
         }
     }
     
@@ -55,7 +71,7 @@ class CountryHeritageTableViewCell:UITableViewCell{
         //Display ImageView constraints added
         displayImageView  = UIImageView.init()
         self.contentView.addSubview(displayImageView)
-        displayImageView.contentMode = .scaleAspectFill
+        displayImageView.contentMode = .scaleAspectFit
         displayImageView.translatesAutoresizingMaskIntoConstraints = false
 
         // Bottom View constraints added
@@ -65,20 +81,18 @@ class CountryHeritageTableViewCell:UITableViewCell{
         bottomLine.translatesAutoresizingMaskIntoConstraints = false
         
         //set title label constraints
-        let titleLabelLeadingConstraint = titleLabel.leadingAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.leadingAnchor, constant: CGFloat(Constants.marginConstant))
-        let titleLableTopContraint = titleLabel.topAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.topAnchor, constant: CGFloat(Constants.gapConstant))
+        let titleLabelLeadingConstraint = titleLabel.leadingAnchor.constraint(equalTo: self.displayImageView.trailingAnchor, constant: CGFloat(Constants.marginConstant))
+        let titleLableTopContraint = titleLabel.topAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.topAnchor, constant: CGFloat(Constants.marginConstant))
         let titleLabelTrailingConstraint = titleLabel.trailingAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.trailingAnchor , constant: CGFloat(Constants.marginConstant))
         
         //set Image view constraint
-        let displayImageViewLeadingConstraint = displayImageView.leadingAnchor.constraint(equalTo: self.titleLabel.leadingAnchor)
-        let displayImageViewTrailingConstraint = displayImageView.trailingAnchor.constraint(equalTo: self.descriptionLabel.leadingAnchor, constant: CGFloat(-Constants.gapConstant))
-        let displayImageViewTopConstraint = displayImageView.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: CGFloat(Constants.gapConstant))
+        let displayImageViewLeadingConstraint = displayImageView.leadingAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.leadingAnchor,constant: CGFloat(Constants.marginConstant))
         let displayImageViewHeightConstraint = displayImageView.heightAnchor.constraint(equalToConstant: CGFloat(Constants.imageViewWidthConstant))
         let displayImageViewWidthConstraint = displayImageView.widthAnchor.constraint(equalToConstant: CGFloat(Constants.imageViewWidthConstant))
+        let displayImageViewTopConstraint = displayImageView.topAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.topAnchor, constant: CGFloat(Constants.marginConstant))
    
         //set descriptionLabel constraints
-        let descriptionLabelLeadingConstraint = descriptionLabel.leadingAnchor.constraint(equalTo: self.displayImageView.trailingAnchor, constant: CGFloat(-Constants.gapConstant))
-//        let descriptionLabelBottomConstraint = descriptionLabel.bottomAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.bottomAnchor, constant: CGFloat(Constants.marginConstant))
+        let descriptionLabelLeadingConstraint = descriptionLabel.leadingAnchor.constraint(equalTo: self.titleLabel.leadingAnchor)
         let descriptionLabelTopConstraint = descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: CGFloat(Constants.gapConstant))
         let descriptionLabelTrailingConstraint = descriptionLabel.trailingAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.trailingAnchor,constant: CGFloat(-Constants.marginConstant))
        
@@ -92,7 +106,15 @@ class CountryHeritageTableViewCell:UITableViewCell{
         let conteviewBottomConstraint1 = contentView.bottomAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: CGFloat(Constants.marginConstant))
         let conteviewBottomConstraint2 = contentView.bottomAnchor.constraint(greaterThanOrEqualTo: displayImageView.bottomAnchor, constant: CGFloat(Constants.marginConstant))
 
-    self.contentView.addConstraints([displayImageViewTrailingConstraint,displayImageViewWidthConstraint,displayImageViewLeadingConstraint,displayImageViewHeightConstraint,descriptionLabelLeadingConstraint,displayImageViewTopConstraint,descriptionLabelTopConstraint,descriptionLabelTrailingConstraint,titleLabelTrailingConstraint,titleLableTopContraint,titleLabelLeadingConstraint,bottomLineLeadingConstraint,bottomLineTrailingConstraint,bottomLineTopConstraint,bottomLineBottomConstraint,bottomLineHeightConstraint,conteviewBottomConstraint1,conteviewBottomConstraint2])
+    self.contentView.addConstraints([displayImageViewHeightConstraint,displayImageViewWidthConstraint,displayImageViewLeadingConstraint,descriptionLabelLeadingConstraint,displayImageViewTopConstraint,descriptionLabelTopConstraint,descriptionLabelTrailingConstraint,titleLabelTrailingConstraint,titleLableTopContraint,titleLabelLeadingConstraint,bottomLineLeadingConstraint,bottomLineTrailingConstraint,bottomLineTopConstraint,bottomLineBottomConstraint,bottomLineHeightConstraint,conteviewBottomConstraint1,conteviewBottomConstraint2])
+    }
+    func checkIfValueIsEmpty(value:String?) -> String{
+        if let strVal = value{
+            if !strVal.isEmpty{
+                return strVal
+            }
+        }
+        return ""
     }
 }
 
