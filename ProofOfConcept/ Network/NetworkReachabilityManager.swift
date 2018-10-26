@@ -37,6 +37,7 @@ class NetworkReachabilityManager: NSObject {
     
     @objc func networkStatusChanged(_ notification: Notification) {
         // Do something globally here!
+        print(notification)
     }
     
     static func stopNotifier() -> Void {

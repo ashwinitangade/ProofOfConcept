@@ -20,6 +20,8 @@
 		4348103A21819CB6009A04D6 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4348103921819CB6009A04D6 /* UIColor+Extensions.swift */; };
 		4348103C2181EA2C009A04D6 /* NetworkReachabilityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4348103B2181EA2C009A04D6 /* NetworkReachabilityManager.swift */; };
 		4348103D2181EA2C009A04D6 /* NetworkReachabilityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4348103B2181EA2C009A04D6 /* NetworkReachabilityManager.swift */; };
+		434810432182D3ED009A04D6 /* UIUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434810422182D3ED009A04D6 /* UIUtilities.swift */; };
+		434810442182D3ED009A04D6 /* UIUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434810422182D3ED009A04D6 /* UIUtilities.swift */; };
 		B10957C5D96B536829C31363 /* Pods_ProofOfConceptUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B647DD07EF427729FB53E28 /* Pods_ProofOfConceptUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +52,7 @@
 		4348103221818077009A04D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4348103921819CB6009A04D6 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		4348103B2181EA2C009A04D6 /* NetworkReachabilityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityManager.swift; sourceTree = "<group>"; };
+		434810422182D3ED009A04D6 /* UIUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtilities.swift; sourceTree = "<group>"; };
 		44B9269850EFF3ACDDB9B7D6 /* Pods-ProofOfConcept.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProofOfConcept.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProofOfConcept/Pods-ProofOfConcept.debug.xcconfig"; sourceTree = "<group>"; };
 		9FA810CDA9F191A432772C3D /* Pods-ProofOfConceptUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProofOfConceptUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProofOfConceptUITests/Pods-ProofOfConceptUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		BA9EF45E08A16B429EE23B05 /* Pods_ProofOfConcept.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ProofOfConcept.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -100,6 +103,7 @@
 		43480FF9217F04B8009A04D6 /* ProofOfConcept */ = {
 			isa = PBXGroup;
 			children = (
+				434810412182D3D7009A04D6 /* Utilities */,
 				4348103821819C9D009A04D6 /* Extensions */,
 				434810232180765C009A04D6 /*  Network */,
 				43481022218038E3009A04D6 /* Controller */,
@@ -162,6 +166,14 @@
 				4348103921819CB6009A04D6 /* UIColor+Extensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		434810412182D3D7009A04D6 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				434810422182D3ED009A04D6 /* UIUtilities.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		5C6661FCB9CE704E40E24878 /* Pods */ = {
@@ -355,6 +367,7 @@
 				4348101F2180388C009A04D6 /* CountryHeritageTableViewCell.swift in Sources */,
 				43480FFD217F04B8009A04D6 /* ListViewController.swift in Sources */,
 				4348102521807680009A04D6 /* APIRequest.swift in Sources */,
+				434810432182D3ED009A04D6 /* UIUtilities.swift in Sources */,
 				43480FFB217F04B8009A04D6 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -363,6 +376,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				434810442182D3ED009A04D6 /* UIUtilities.swift in Sources */,
 				4348103D2181EA2C009A04D6 /* NetworkReachabilityManager.swift in Sources */,
 				4348103121818076009A04D6 /* ProofOfConceptUITests.swift in Sources */,
 			);

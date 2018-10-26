@@ -19,11 +19,16 @@ class ListViewController:UIViewController{
     let network = NetworkReachabilityManager.sharedInstance
 
     override func viewDidLoad() {
-        network.reachability.whenReachable = { reachability in
-            self.setUpTableView()
+        self.setUpTableView()
+        self.setUpView()
+        
+        NetworkReachabilityManager.isReachable { _ in
             self.refreshView()
-            self.setUpView()
         }
+        NetworkReachabilityManager.isUnreachable { (_) in
+            UIUtilities.alertWith(title: "Error", message: "No Internet Connection", viewCtlr: self)
+        }
+        self.changeUIAsPerNetworkAvailability()
         
     }
     
@@ -34,9 +39,6 @@ class ListViewController:UIViewController{
         self.navigationController?.navigationBar.tintColor = UIColor.white
         let navigationAttributes = [.font: UIFont.boldSystemFont(ofSize: CGFloat(Constants.navigationBarFontSize)),NSAttributedString.Key.foregroundColor: UIColor.white]
         self.navigationController?.navigationBar.titleTextAttributes = navigationAttributes
-        self.apiRequest = APIRequest()
-        self.apiRequest.delegate = self
-        loadData()
     }
     
     func setUpTableView(){
@@ -61,8 +63,12 @@ class ListViewController:UIViewController{
     }
     
     func refreshView(){
+        
         refreshControl = UIRefreshControl.init()
         refreshControl.tintColor = UIColor.init(hexString: "5a98f7")
+        self.apiRequest = APIRequest()
+        self.apiRequest.delegate = self
+        loadData()
         tableView.addSubview(refreshControl)
         refreshControl.addTarget(self, action:#selector(loadData), for: .valueChanged)
     }
@@ -72,6 +78,21 @@ class ListViewController:UIViewController{
         self.apiRequest.getData()
         refreshControl.endRefreshing()
         
+    }
+    
+    func changeUIAsPerNetworkAvailability(){
+        network.reachability.whenUnreachable = { reachability in
+            UIUtilities.alertWith(title: "Error", message: "No Internet Connection", viewCtlr: self)
+                DispatchQueue.main.async {
+                self.list.removeAll()
+                self.tableView.reloadData()
+            }
+        }
+        network.reachability.whenReachable = { reachability in
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
     }
 }
 //Mark:- Tableview delegate methods
