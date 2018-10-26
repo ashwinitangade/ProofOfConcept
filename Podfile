@@ -6,8 +6,10 @@ target 'ProofOfConcept' do
     pod 'SDWebImage'
     pod 'MBProgressHUD', '~> 1.1.0'
     pod 'ReachabilitySwift'
-    
-  target 'ProofOfConceptUITests' do
-    inherit!:search_paths
-  end
+end
+
+target 'ProofOfConceptUITests' do
+    pod 'SDWebImage'
+    pod 'MBProgressHUD', '~> 1.1.0'
+    pod 'ReachabilitySwift'
 end
