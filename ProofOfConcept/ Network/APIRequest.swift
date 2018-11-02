@@ -9,34 +9,46 @@
 import Foundation
 import UIKit
 
-protocol APIRequestDelegate: class {
-    func getCountryData(list: [CountryHeritage],countryTitle:String)
+enum POCError: Error {
+    case invalidUrl
+    case noResultsFound
 }
+typealias  CountryHeritageCompletionHandler = (Country?, Error?) -> Void
 
 class APIRequest: NSObject{
+    private var session: URLSession
     
-    weak var delegate:APIRequestDelegate?
+    init(session: URLSession) {
+        self.session = session
+    }
     
-    func getData(){
-    // Asynchronously API is hit here
-        guard let url = URL(string: Constants.baseURL) else {return}
-        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
-            guard let dataResponse = data,
-                error == nil else {
-                    print(error?.localizedDescription ?? "Response Error")
-                    return }
-            do{
-                //here dataResponse received from a network request
-                let stringValue = String(data: dataResponse, encoding: .ascii) ?? ""
-                let errorFreeData = stringValue.data(using: .utf8)! as Data
+    convenience override init () {
+        self.init(session: URLSession(configuration: .default))
+    }
+    
+    func getData(completion: @escaping CountryHeritageCompletionHandler) {
+        guard let popularNYNewsurl = URL(string: Constants.baseURL) else {
+            completion(nil, POCError.invalidUrl)
+            return
+        }
+        let task =  session.dataTask(with: popularNYNewsurl) { (data, _, error) in
+            guard let responseData = data, error == nil else {
+                completion(nil, error)
+                return
+            }
+            let stringValue = String(data: responseData, encoding: .ascii)
+            guard let errorFreeData = stringValue?.data(using: String.Encoding.utf8) else {
+                print("could not convert data to UTF-8 format")
+                return
+            }
+            do {
                 let decoder = JSONDecoder()
                 let country = try decoder.decode(Country.self, from:
                     errorFreeData) //Decode JSON Response Data
-                if let title = country.title {
-                    self.delegate?.getCountryData(list: country.rows,countryTitle: title)
-                }
-            } catch let parsingError {
-                print("Error", parsingError)
+                completion(country, nil)
+            } catch let error {
+                print("json error: \(error)")
+                completion(nil,error)
             }
         }
         task.resume()

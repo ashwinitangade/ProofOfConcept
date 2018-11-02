@@ -12,13 +12,13 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var rootController:ListViewController!
+    var rootController:CountryListViewController!
     var navController:UINavigationController!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         window = UIWindow.init(frame: UIScreen.main.bounds)
-        rootController = ListViewController()
+        rootController = CountryListViewController()
         navController = UINavigationController.init(rootViewController: rootController)
         window!.addSubview(navController.view)
         window!.rootViewController = navController

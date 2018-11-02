@@ -17,4 +17,13 @@ class UIUtilities:NSObject {
         }))
         viewCtlr.present(alert, animated: true, completion: nil)
     }
+    
+    class func navigationBarAppearance(){
+        guard let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController else { return }
+
+        navigationController.navigationBar.barTintColor = UIColor.init(hexString: Constants.navigationBarColor)
+        navigationController.navigationBar.tintColor = UIColor.white
+        let navigationAttributes = [.font: UIFont.boldSystemFont(ofSize: CGFloat(Constants.navigationBarFontSize)),NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationController.navigationBar.titleTextAttributes = navigationAttributes
+    }
 }

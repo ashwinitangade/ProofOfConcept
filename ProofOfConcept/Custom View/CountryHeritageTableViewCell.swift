@@ -19,9 +19,9 @@ class CountryHeritageTableViewCell:UITableViewCell{
         titleLabel.text = nil
         descriptionLabel.text = nil
         self.displayImageView.image = nil
-        titleLabel.text = checkIfValueIsEmpty(value: withItem.title)
-        descriptionLabel.text = checkIfValueIsEmpty(value: withItem.desc)
-        let imageUrl = checkIfValueIsEmpty(value: withItem.imageHref)
+        titleLabel.text = withItem.title ?? ""
+        descriptionLabel.text = withItem.desc ?? ""
+        let imageUrl = withItem.imageHref ?? ""
         if let imageView = displayImageView {
             imageView.sd_setImage(with: URL(string: imageUrl), placeholderImage: UIImage(named: "noImage"), options: .refreshCached) { (image, error, cacheType, url) in
                 if (error != nil || image == nil)
@@ -108,13 +108,6 @@ class CountryHeritageTableViewCell:UITableViewCell{
 
     self.contentView.addConstraints([displayImageViewHeightConstraint,displayImageViewWidthConstraint,displayImageViewLeadingConstraint,descriptionLabelLeadingConstraint,displayImageViewTopConstraint,descriptionLabelTopConstraint,descriptionLabelTrailingConstraint,titleLabelTrailingConstraint,titleLableTopContraint,titleLabelLeadingConstraint,bottomLineLeadingConstraint,bottomLineTrailingConstraint,bottomLineTopConstraint,bottomLineBottomConstraint,bottomLineHeightConstraint,conteviewBottomConstraint1,conteviewBottomConstraint2])
     }
-    func checkIfValueIsEmpty(value:String?) -> String{
-        if let strVal = value{
-            if !strVal.isEmpty{
-                return strVal
-            }
-        }
-        return ""
-    }
+    
 }
 

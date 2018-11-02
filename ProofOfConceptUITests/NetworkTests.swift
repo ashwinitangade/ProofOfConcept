@@ -12,13 +12,12 @@ import XCTest
 class NetworkTests: XCTestCase {
 
     let networkRequest = APIRequest()
-    let listviewController = ListViewController()
+    let listviewController = CountryListViewController()
     let networkReachabilty = NetworkReachabilityManager.sharedInstance
     
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        networkRequest.delegate = listviewController
-        listviewController.refreshView()
+        listviewController.loadData()
     }
 
     override func tearDown() {
@@ -38,7 +37,7 @@ class NetworkTests: XCTestCase {
     //Mark:- test service request
     func testServiceCallSuccess() {
     
-        XCTAssertTrue(listviewController.list.count > 0, "Service request call is successful")
+        XCTAssertTrue(listviewController.countryListViewModel.countryListViewModels.count > 0, "Service request call is successful")
     }
 
     func testPerformanceExample() {

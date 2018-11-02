@@ -10,6 +10,8 @@ import UIKit
 
 struct Constants {
     static let baseURL = "https://dl.dropboxusercontent.com/s/2iodh4vg0eortkl/facts.json"
+    static let navigationBarColor = "5a98f7"
+    static let cellIdentifier = "cell"
     static let marginConstant = 20
     static let gapConstant = 10
     static let imageViewWidthConstant = 100

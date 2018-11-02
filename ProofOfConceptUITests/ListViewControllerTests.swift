@@ -11,7 +11,7 @@ import XCTest
 
 class ListViewControllerTests: XCTestCase {
 
-    var listViewController = ListViewController()
+    var listViewController = CountryListViewController()
     
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -36,12 +36,16 @@ class ListViewControllerTests: XCTestCase {
     }
     
     func testToConformUITableViewDataSource(){
-        XCTAssertTrue(ListViewController.conforms(to: UITableViewDataSource.self), "View does not confirm to UITableViewDataSource")
+        XCTAssertTrue(CountryListViewController.conforms(to: UITableViewDataSource.self), "View does not confirm to UITableViewDataSource")
     }
    
+    func testNavigationTitle(){
+        XCTAssertTrue(listViewController.countryListViewModel.title !=  "", "Navigation bar does not have a title")
+    }
+    
     func testToCheckIfTableViewCellisRegistered(){
-        listViewController.tableView.register(CountryHeritageTableViewCell.self, forCellReuseIdentifier: "cell")
-        let cell = listViewController.tableView.dequeueReusableCell(withIdentifier: "cell")
+        listViewController.tableView.register(CountryHeritageTableViewCell.self, forCellReuseIdentifier: Constants.cellIdentifier)
+        let cell = listViewController.tableView.dequeueReusableCell(withIdentifier: Constants.cellIdentifier)
         XCTAssertNotNil(cell, "Cell must be an instance of CountryHeritageTableViewCell")
     }
 

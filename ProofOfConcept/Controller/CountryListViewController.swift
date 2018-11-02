@@ -1,5 +1,5 @@
 //
-//  ListViewController.swift
+//  CountryListViewController.swift
 //  ProofOfConcept
 //
 //  Created by AshwiniT on 23/10/18.
@@ -10,15 +10,17 @@ import UIKit
 import MBProgressHUD
 import Reachability
 
-class ListViewController:UIViewController{
+class CountryListViewController:UIViewController{
     
     var tableView:UITableView!
-    var list: [CountryHeritage] = [CountryHeritage]()
+    var countryListViewModel:CountryListViewModel!
     var apiRequest:APIRequest!
     var refreshControl:UIRefreshControl!
     let network = NetworkReachabilityManager.sharedInstance
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         self.setUpTableView()
         self.setUpView()
         
@@ -35,10 +37,7 @@ class ListViewController:UIViewController{
     //Mark:- setup methods
     func setUpView(){
         self.view.backgroundColor = UIColor.white
-        self.navigationController?.navigationBar.barTintColor = UIColor.init(hexString: "5a98f7")
-        self.navigationController?.navigationBar.tintColor = UIColor.white
-        let navigationAttributes = [.font: UIFont.boldSystemFont(ofSize: CGFloat(Constants.navigationBarFontSize)),NSAttributedString.Key.foregroundColor: UIColor.white]
-        self.navigationController?.navigationBar.titleTextAttributes = navigationAttributes
+        UIUtilities.navigationBarAppearance()
     }
     
     func setUpTableView(){
@@ -51,7 +50,7 @@ class ListViewController:UIViewController{
         self.view.addSubview(tableView)
         
         // Register table view cells
-        tableView.register(CountryHeritageTableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(CountryHeritageTableViewCell.self, forCellReuseIdentifier: Constants.cellIdentifier)
         
         // Added Constraints
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -65,9 +64,7 @@ class ListViewController:UIViewController{
     func refreshView(){
         
         refreshControl = UIRefreshControl.init()
-        refreshControl.tintColor = UIColor.init(hexString: "5a98f7")
-        self.apiRequest = APIRequest()
-        self.apiRequest.delegate = self
+        refreshControl.tintColor = UIColor.gray
         loadData()
         tableView.addSubview(refreshControl)
         refreshControl.addTarget(self, action:#selector(loadData), for: .valueChanged)
@@ -75,7 +72,18 @@ class ListViewController:UIViewController{
     
     @objc func loadData(){
         MBProgressHUD.showAdded(to: self.view, animated: true)
-        self.apiRequest.getData()
+        self.apiRequest = APIRequest()
+        self.countryListViewModel = CountryListViewModel(webservice: self.apiRequest, completion: { (country, error) in
+            if error != nil{
+                UIUtilities.alertWith(title: "Error", message: error.debugDescription, viewCtlr: self)
+                self.updateTableView()
+                return
+            }
+            self.updateTableView()
+        })
+        self.countryListViewModel.bindToSourceViewModels = {
+            self.updateTableView()
+        }
         refreshControl.endRefreshing()
         
     }
@@ -84,7 +92,6 @@ class ListViewController:UIViewController{
         network.reachability.whenUnreachable = { reachability in
             UIUtilities.alertWith(title: "Error", message: "No Internet Connection", viewCtlr: self)
                 DispatchQueue.main.async {
-                self.list.removeAll()
                 self.tableView.reloadData()
             }
         }
@@ -94,41 +101,16 @@ class ListViewController:UIViewController{
             }
         }
     }
-}
-//Mark:- Tableview delegate methods
-extension ListViewController:UITableViewDelegate{
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
-        return UITableView.automaticDimension
-    }
-}
-
-//Mark:- Tableview data source methods
-extension ListViewController:UITableViewDataSource{
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (list.count)
-    }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CountryHeritageTableViewCell
-        cell.setCell(withItem: list[indexPath.row])
-        
-        return cell;
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-}
-//Mark:- APIRequestDelagate methods
-extension ListViewController:APIRequestDelegate{
-    func getCountryData(list: [CountryHeritage],countryTitle:String) {
-        self.list = list
+    func updateTableView(){
         DispatchQueue.main.async {
-            self.navigationItem.title = countryTitle
+            self.navigationItem.title = self.countryListViewModel.title
             self.tableView.reloadData()
+            if self.countryListViewModel.countryListViewModels.count <= 0{
+                UIUtilities.alertWith(title: "Info", message: "No Data received from Server", viewCtlr: self)
+            }
             MBProgressHUD.hide(for: self.view, animated: true)
         }
     }
+    
 }
