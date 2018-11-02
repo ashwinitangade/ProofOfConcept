@@ -13,7 +13,7 @@ struct Constants {
     static let navigationBarColor = "5a98f7"
     static let cellIdentifier = "cell"
     static let marginConstant = 20
-    static let gapConstant = 10
+    static let gapConstant = 6
     static let imageViewWidthConstant = 100
     static let bottomLineHeightConstant = 1
     static let bottomLineBottomConstant = -1
