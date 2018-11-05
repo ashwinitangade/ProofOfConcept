@@ -41,6 +41,7 @@ class CountryListViewModel: NSObject{
             if let countryData = country{
                 self.countryListViewModels = countryData.rows
                 self.title = countryData.title ?? ""
+                completion(countryData,nil)
             }
         }
     }

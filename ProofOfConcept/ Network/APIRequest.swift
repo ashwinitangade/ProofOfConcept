@@ -27,11 +27,11 @@ class APIRequest: NSObject{
     }
     
     func getData(completion: @escaping CountryHeritageCompletionHandler) {
-        guard let popularNYNewsurl = URL(string: Constants.baseURL) else {
+        guard let url = URL(string: Constants.baseURL) else {
             completion(nil, POCError.invalidUrl)
             return
         }
-        let task =  session.dataTask(with: popularNYNewsurl) { (data, _, error) in
+        let task =  session.dataTask(with: url) { (data, _, error) in
             guard let responseData = data, error == nil else {
                 completion(nil, error)
                 return

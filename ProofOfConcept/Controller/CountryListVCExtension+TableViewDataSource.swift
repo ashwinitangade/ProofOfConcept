@@ -11,7 +11,10 @@ import UIKit
 //Mark:- Tableview data source methods
 extension CountryListViewController:UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (self.countryListViewModel.countryListViewModels.count)
+        if self.countryListViewModel != nil{
+                return self.countryListViewModel.countryListViewModels.count
+        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -10,12 +10,13 @@ import UIKit
 
 class UIUtilities:NSObject {
     
-    class func alertWith(title: String, message: String,viewCtlr: UIViewController){
+    class func alertWith(title: String, message: String,viewCtlr: UIViewController,action:((UIAlertAction?) -> Void)?){
+   
         let alert = UIAlertController.init(title: title, message: message, preferredStyle:.alert)
-        alert.addAction(UIAlertAction.init(title: "Ok", style: .default, handler: { (tapped) in
-            //Do nothing
-        }))
-        viewCtlr.present(alert, animated: true, completion: nil)
+        alert.addAction(UIAlertAction.init(title: "Ok", style: .default, handler: action))
+         DispatchQueue.main.async {
+            viewCtlr.present(alert, animated: true, completion: nil)
+        }
     }
     
     class func navigationBarAppearance(){

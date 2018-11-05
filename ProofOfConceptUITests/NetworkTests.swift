@@ -36,8 +36,19 @@ class NetworkTests: XCTestCase {
     
     //Mark:- test service request
     func testServiceCallSuccess() {
+        listviewController.apiRequest = APIRequest()
+        listviewController.countryListViewModel = CountryListViewModel(webservice: listviewController.apiRequest, completion: { (country, error) in
+            XCTAssertTrue(error != nil, "service request call is success without any errors")
+        })
+    }
     
-        XCTAssertTrue(listviewController.countryListViewModel.countryListViewModels.count > 0, "Service request call is successful")
+    func testDataReceivedCountIsGreaterThanZero() {
+        listviewController.apiRequest = APIRequest()
+        listviewController.countryListViewModel = CountryListViewModel(webservice: listviewController.apiRequest, completion: { (country, error) in
+            if let rows = country?.rows.count{
+                XCTAssertTrue(rows > 0, "service response data has more data")
+            }
+        })
     }
 
     func testPerformanceExample() {

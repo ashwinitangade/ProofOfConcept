@@ -23,12 +23,23 @@ class CountryListViewController:UIViewController{
         
         self.setUpTableView()
         self.setUpView()
+        self.refreshView()
         
-        NetworkReachabilityManager.isReachable { _ in
-            self.refreshView()
+        if let countryListModel = self.countryListViewModel{
+                countryListModel.bindToSourceViewModels = {
+                    self.updateTableView()
+            }
         }
-        NetworkReachabilityManager.isUnreachable { (_) in
-            UIUtilities.alertWith(title: "Error", message: "No Internet Connection", viewCtlr: self)
+        NetworkReachabilityManager.isUnreachable { (reachability) in
+            if reachability.reachability.connection == .none{
+                UIUtilities.alertWith(title: "Error", message: "No Internet Connection", viewCtlr: self, action: { (action) in
+                    if action?.title == "Ok"{
+                        DispatchQueue.main.async {
+                            self.reloadTableView()
+                        }
+                    }
+                })
+            }
         }
         self.changeUIAsPerNetworkAvailability()
         
@@ -47,6 +58,7 @@ class CountryListViewController:UIViewController{
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
+        tableView.allowsSelection = false
         self.view.addSubview(tableView)
         
         // Register table view cells
@@ -74,31 +86,57 @@ class CountryListViewController:UIViewController{
         MBProgressHUD.showAdded(to: self.view, animated: true)
         self.apiRequest = APIRequest()
         self.countryListViewModel = CountryListViewModel(webservice: self.apiRequest, completion: { (country, error) in
-            if error != nil{
-                UIUtilities.alertWith(title: "Error", message: error.debugDescription, viewCtlr: self)
-                self.updateTableView()
-                return
+            if error != nil || country == nil{
+                UIUtilities.alertWith(title: "Error", message: error.debugDescription, viewCtlr: self, action: { (action) in
+                    if action?.title == "Ok"{
+                        DispatchQueue.main.async {
+                            self.reloadTableView()
+                        }
+                    }
+                })
             }
-            self.updateTableView()
+            if country != nil{
+                if self.countryListViewModel.countryListViewModels.count <= 0{
+                    UIUtilities.alertWith(title: "Info", message: "No Data received from Server", viewCtlr: self, action: { (action) in
+                        if action?.title == "Ok"{
+                            DispatchQueue.main.async  {
+                                self.reloadTableView()
+                            }
+                        }
+                    })
+                }
+                self.updateTableView()
+            }
         })
-        self.countryListViewModel.bindToSourceViewModels = {
-            self.updateTableView()
-        }
         refreshControl.endRefreshing()
         
     }
     
     func changeUIAsPerNetworkAvailability(){
         network.reachability.whenUnreachable = { reachability in
-            UIUtilities.alertWith(title: "Error", message: "No Internet Connection", viewCtlr: self)
-                DispatchQueue.main.async {
-                self.tableView.reloadData()
+            if reachability.connection == .none{
+                UIUtilities.alertWith(title: "Error", message: "No Internet Connection", viewCtlr: self, action: { (action) in
+                    if action?.title == "Ok"{
+                        DispatchQueue.main.async {
+                            self.reloadTableView()
+                        }
+                    }
+                })
             }
         }
         network.reachability.whenReachable = { reachability in
             DispatchQueue.main.async {
-                self.tableView.reloadData()
+                self.reloadTableView()
             }
+        }
+    }
+    
+    func reloadTableView()
+    {
+        if let countryListModel = self.countryListViewModel{
+            countryListModel.title = ""
+            countryListModel.countryListViewModels.removeAll()
+            self.tableView.reloadData()
         }
     }
     
@@ -106,9 +144,6 @@ class CountryListViewController:UIViewController{
         DispatchQueue.main.async {
             self.navigationItem.title = self.countryListViewModel.title
             self.tableView.reloadData()
-            if self.countryListViewModel.countryListViewModels.count <= 0{
-                UIUtilities.alertWith(title: "Info", message: "No Data received from Server", viewCtlr: self)
-            }
             MBProgressHUD.hide(for: self.view, animated: true)
         }
     }

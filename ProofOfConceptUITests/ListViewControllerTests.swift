@@ -30,9 +30,21 @@ class ListViewControllerTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    //Mark: UITableview tests
-    func testIfTableViewISNotNil(){
-        XCTAssertNotNil(listViewController.tableView, "Table view is not initialised")
+    //Mark: - View loading tests
+    func testThatViewLoads()
+    {
+        XCTAssertNotNil(listViewController.view, "View not initiated properly");
+    }
+    
+    func testParentViewHasTableViewSubview()
+    {
+        let subviews = listViewController.view.subviews;
+        XCTAssertTrue(subviews.contains(listViewController.tableView), "View does not have a table subview");
+    }
+    
+    func testThatTableViewLoads()
+    {
+        XCTAssertNotNil(listViewController.tableView, "TableView not initiated");
     }
     
     func testToConformUITableViewDataSource(){
@@ -40,13 +52,32 @@ class ListViewControllerTests: XCTestCase {
     }
    
     func testNavigationTitle(){
-        XCTAssertTrue(listViewController.countryListViewModel.title !=  "", "Navigation bar does not have a title")
+        XCTAssertTrue(listViewController.countryListViewModel.title ==  "", "Navigation bar does not have a title")
     }
     
     func testToCheckIfTableViewCellisRegistered(){
         listViewController.tableView.register(CountryHeritageTableViewCell.self, forCellReuseIdentifier: Constants.cellIdentifier)
         let cell = listViewController.tableView.dequeueReusableCell(withIdentifier: Constants.cellIdentifier)
         XCTAssertNotNil(cell, "Cell must be an instance of CountryHeritageTableViewCell")
+    }
+    
+    func testTableViewCellData()
+    {
+        let tableView = listViewController.tableView!
+        for (index,_) in listViewController.countryListViewModel.countryListViewModels.enumerated(){
+            let indexPath = IndexPath(item: index, section: 0)
+            if let cell = tableView.cellForRow(at: indexPath) as? CountryHeritageTableViewCell
+            {
+                let rowtitle = cell.titleLabel.text
+                XCTAssertTrue(rowtitle != nil, "Title is not nil")
+                let rowDesc = cell.descriptionLabel.text
+                XCTAssertTrue(rowDesc != nil, "description is not nil")
+
+            }
+
+        }
+        
+        
     }
 
 }
